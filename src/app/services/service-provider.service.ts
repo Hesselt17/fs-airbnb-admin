@@ -1,35 +1,32 @@
 import { Injectable } from '@angular/core';
-import { ServiceProvider } from '../models/service-provider';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ServiceProviderService {
 
-  serviceProviders: Array<ServiceProvider>;
 
-  constructor() {
-
-    this.serviceProviders = [
-      {
-        name: 'Joe',
-        lastName: 'Soap',
-        email: 'joe@mail.com',
-        cellPhone: 828073593,
-        numberOfListings: 5
-      },
-      {
-        name: 'John',
-        lastName: 'Doe',
-        email: 'john@mail.com',
-        cellPhone: 828073545,
-        numberOfListings: 15
-      }
-    ];
+  constructor(
+    private httpClient : HttpClient
+  ) {
 
   }
 
-  getServiceProviders(): Array<ServiceProvider> {
-    return this.serviceProviders;
+  getAllBookings(cb: Function) {
+
+    this.httpClient.get("http://localhost:3000/api/bookings")
+      .subscribe(
+        (response : any /*or user*/) => {
+          console.log(response); //Access the express res.json({id:4, name:""...})
+            //response.name;
+          return cb(null,response);
+        },
+        (err) => {
+          alert("failed to getAllBookings");
+          return cb(err,null);
+        }
+      );
   }
+
 }

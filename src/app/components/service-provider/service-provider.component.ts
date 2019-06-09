@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ServiceProvider } from '../../models/service-provider';
+import { Booking } from 'src/app/models/booking';
 import { ServiceProviderService } from 'src/app/services/service-provider.service';
 
 
@@ -10,13 +10,22 @@ import { ServiceProviderService } from 'src/app/services/service-provider.servic
 })
 export class ServiceProvidersComponent implements OnInit {
 
-  serviceProviders: Array<ServiceProvider>;
+  public bookings: Array<Booking> = [];
 
   constructor(
-    private spService: ServiceProviderService
+    private bookingService: ServiceProviderService
   ) {
+    const bookCallback = (err, bookings) => {
+      if (err) {
+        alert(err.error.message);
+        return;
+      }
+      console.log(bookings);
+      this.bookings = bookings;
+    };
 
-    this.serviceProviders = this.spService.getServiceProviders();
+    this.bookingService.getAllBookings(bookCallback);
+    console.log(this.bookings);
 
   }
 
