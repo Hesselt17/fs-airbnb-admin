@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { PropertyService } from 'src/app/services/property.service';
+import { Property } from 'src/app/models/property';
+
 
 @Component({
   selector: 'app-dashboard',
@@ -8,31 +10,26 @@ import { Router } from '@angular/router';
 })
 export class DashboardComponent implements OnInit {
 
-  navItems: Array<any> = [
-    {
-      name: 'Home',
-      rout: '/home'
-    },
-    {
-      name: 'Users',
-      rout: '/users'
-    },
-    {
-      name: 'Service Providers',
-      rout: '/service-providers'
-    }
-  ]
+  properties: Array<Property> = [];
 
   constructor(
-    private router: Router
-  ) { }
+    private propService: PropertyService
+  ) { 
+    const listingCallback = (err, props) => {
+      if (err) {
+        alert(err.error.message);
+        return;
+      }
+      console.log(props);
+      this.properties = props;
+    };
+
+    this.propService.getAllProperties(listingCallback);
+    console.log(this.properties);
+  }
 
   ngOnInit() {
-    this.router.navigate(['/users']);
   }
 
-  navTo(page) {
-    this.router.navigate([page.rout]);
-  }
 
 }

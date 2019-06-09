@@ -14,7 +14,7 @@ export class UsersComponent implements OnInit {
   constructor(
     private userService: UserService
   ) {
-    const listingCallback = (err, users) => {
+    const userCallback = (err, users) => {
       if (err) {
         alert(err.error.message);
         return;
@@ -23,7 +23,7 @@ export class UsersComponent implements OnInit {
       this.users = users;
     };
 
-    this.userService.getAllUsers(listingCallback);
+    this.userService.getAllUsers(userCallback);
     console.log(this.users);
   }
 
